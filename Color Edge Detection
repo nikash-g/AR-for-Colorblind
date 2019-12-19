@@ -1,0 +1,31 @@
+# import the necessary packages
+import argparse
+
+import cv2
+import numpy as np
+
+
+# load the image
+image = cv2.imread("C:\\Users\\sgujj\\Downloads\\image.jpg")
+
+boundaries = [
+    ([15, 10, 100], [50, 60, 222]),  #red
+    ([86, 40, 4], [223, 90, 52]),    #blue
+    ([25, 146, 190], [62, 174, 250]),
+    ([103, 86, 65], [145, 133, 128])]
+# loop over the boundaries
+for (lower, upper) in boundaries:
+    # create NumPy arrays from the boundaries
+    lower = np.array(lower, dtype="uint8")
+    upper = np.array(upper, dtype="uint8")
+
+    # find the colors within the specified boundaries and apply
+    # the mask
+    mask = cv2.inRange(image, lower, upper)
+    output = cv2.bitwise_and(image, image, mask=mask)
+
+    # show the images
+    cv2.imshow("image", np.hstack([image, output]))
+    cv2.waitKey(0)
+
+
